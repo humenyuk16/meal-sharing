@@ -93,7 +93,7 @@ app.get("/last-meal", async (req, res) => {
   try {
     const lastMeal = await knex("Meal")
       .select()
-      .where("id", knex.raw("(SELECT MAX(id) FROM Meal)"));
+      .where("id", '=', knex("Meal").max('id'));
 
     if (lastMeal.length > 0) {
       res.json(lastMeal);
