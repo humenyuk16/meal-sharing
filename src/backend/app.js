@@ -31,7 +31,7 @@ app.get("/future-meals", async(reg, res) => {
      res.status(404).send("No future meals found");
      return
     }
-    res.json(futureMeals);
+    res.status(200).json(futureMeals);
   }catch(error){
     console.error(error);
     res.status(500).send("Something went wrong");
@@ -47,7 +47,7 @@ app.get("/past-meals", async(reg,res)=>{
       res.status(404).send("No past meals found");
       return
     }
-    res.json(pastMeals);
+    res.status(200).json(pastMeals);
   }catch(error){
     console.error(error);
     res.status(500).send("Something went wrong");
@@ -63,7 +63,7 @@ app.get("/all-meals", async(reg, res)=>{
       res.status(404).send("No meals found");
       return
     }
-    res.json(allMeals);
+    res.status(200).json(allMeals);
   }catch(error){
     console.error(error);
     res.status(500).send("Something went wrong");
@@ -78,7 +78,7 @@ app.get("/first-meal", async (req, res) => {
       .first();
 
     if (firstMeal) {
-      res.json(firstMeal);
+      res.status(200).json(firstMeal);
     } else {
       res.status(404).send("No meal found");
     }
@@ -96,7 +96,7 @@ app.get("/last-meal", async (req, res) => {
       .where("id", '=', knex("Meal").max('id'));
 
     if (lastMeal.length > 0) {
-      res.json(lastMeal);
+      res.status(200).json(lastMeal);
     } else {
       res.status(404).send("No meal found");
     }
