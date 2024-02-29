@@ -1,15 +1,91 @@
 const express = require("express");
 const router = express.Router();
 const knex = require("../database");
+const app = require("../app");
 
-router.get("/", async (request, response) => {
+
+router.get("/", async (reg,res) => {
+try{
+    const meals = await knex("Meal")    
+    .select();
+    res.json(meals);
+}catch(error){
+    console.error(error);
+    res.status(500).send("Something went wrong");
+}
+});
+
+
+router.post("/", async (reg, res) => {
   try {
-    // knex syntax for selecting things. Look up the documentation for knex for further info
-    const titles = await knex("meals").select("title");
-    response.json(titles);
+    const newMeal = reg.body;
+    const meal = await knex("Meal")
+    .insert(newMeal);
+    res.status(201).json(meal);
   } catch (error) {
-    throw error;
+    console.error(error);
+    res.status(500).send("Something went wrong");
   }
+});
+
+
+router.get("/:id", async(reg,res)=>{
+  try{
+    const mealId = reg.params.id
+    const meal = await knex("Meal")
+    .where("id","=", mealId)
+    .select();
+  
+
+    if(meal.length === 0){
+      res.status(404).send("Meal not found");
+      return
+    }
+    res.json({ meal });
+
+  }catch(error){
+    console.error(error);
+    res.status(500).send("Something went wrong");
+  }
+});
+
+router.put("/:id", async(reg,res)=>{
+  try{
+    const mealId = reg.params.id
+    const updatedMeal = reg.body
+    const meal = await knex("Meal")
+    .where("id","=", mealId)
+    .update(updatedMeal);
+    if(meal === 0){
+      res.status(404).send("Meal not found");
+      return
+    }
+    res.status(200).json({ meal });
+
+  }catch(error){
+    console.error(error);
+    res.status(500).send("Something went wrong");
+  }
+});
+
+
+router.delete("/:id", async(reg,res)=>{
+  try{
+    const mealId = reg.params.id
+    const meal = await knex("Meal")
+    .where("id","=", mealId)
+    .del();
+    if(meal === 0){
+      res.status(404).send("Meal not found");
+      return
+    }
+    res.status(200).json({ meal });
+
+  }catch(error){
+    console.error(error);
+    res.status(500).send("Something went wrong");
+  }
+
 });
 
 module.exports = router;
