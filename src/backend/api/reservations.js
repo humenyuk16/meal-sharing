@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const knex = require("../database");
 
-router.get("/", async (reg,res) => {
+router.get("/", async (req,res) => {
     try{
         const reservations = await knex("Reservation")    
         .select();
@@ -14,9 +14,9 @@ router.get("/", async (reg,res) => {
     });
 
 
-router.post("/", async (reg, res) => {
+router.post("/", async (req, res) => {
     try {
-      const newReservation = reg.body;
+      const newReservation = req.body;
       const reservations = await knex("Reservation")
       .insert(newReservation);
       res.status(201).json(reservations);
@@ -26,9 +26,9 @@ router.post("/", async (reg, res) => {
     }
   });
 
-  router.get("/:id", async(reg,res)=>{
+  router.get("/:id", async(req,res)=>{
   try{
-    const reservationlId = reg.params.id
+    const reservationlId = req.params.id
     const reservations = await knex("Reservation")
     .where("id","=", reservationlId)
     .select();
@@ -46,10 +46,10 @@ router.post("/", async (reg, res) => {
   }
 });
 
-router.put("/:id", async(reg,res)=>{
+router.put("/:id", async(req,res)=>{
     try{
-      const reservationlId = reg.params.id
-      const updateReservation = reg.body
+      const reservationlId = req.params.id
+      const updateReservation = req.body
       const reservations = await knex("Reservation")
       .where("id","=", reservationlId)
       .update(updateReservation);
@@ -65,9 +65,9 @@ router.put("/:id", async(reg,res)=>{
     }
   });
 
-  router.delete("/:id", async(reg,res)=>{
+  router.delete("/:id", async(req,res)=>{
     try{
-      const reservationId = reg.params.id
+      const reservationId = req.params.id
       const reservations = await knex("Reservation")
       .where("id","=", reservationId)
       .del();

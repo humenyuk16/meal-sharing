@@ -4,7 +4,7 @@ const knex = require("../database");
 const app = require("../app");
 
 
-router.get("/", async (reg,res) => {
+router.get("/", async (req,res) => {
 try{
     const meals = await knex("Meal")    
     .select();
@@ -16,9 +16,9 @@ try{
 });
 
 
-router.post("/", async (reg, res) => {
+router.post("/", async (req, res) => {
   try {
-    const newMeal = reg.body;
+    const newMeal = req.body;
     const meal = await knex("Meal")
     .insert(newMeal);
     res.status(201).json(meal);
@@ -29,9 +29,9 @@ router.post("/", async (reg, res) => {
 });
 
 
-router.get("/:id", async(reg,res)=>{
+router.get("/:id", async(req,res)=>{
   try{
-    const mealId = reg.params.id
+    const mealId = req.params.id
     const meal = await knex("Meal")
     .where("id","=", mealId)
     .select();
@@ -49,10 +49,10 @@ router.get("/:id", async(reg,res)=>{
   }
 });
 
-router.put("/:id", async(reg,res)=>{
+router.put("/:id", async(req,res)=>{
   try{
-    const mealId = reg.params.id
-    const updatedMeal = reg.body
+    const mealId = req.params.id
+    const updatedMeal = req.body
     const meal = await knex("Meal")
     .where("id","=", mealId)
     .update(updatedMeal);
@@ -69,9 +69,9 @@ router.put("/:id", async(reg,res)=>{
 });
 
 
-router.delete("/:id", async(reg,res)=>{
+router.delete("/:id", async(req,res)=>{
   try{
-    const mealId = reg.params.id
+    const mealId = req.params.id
     const meal = await knex("Meal")
     .where("id","=", mealId)
     .del();
