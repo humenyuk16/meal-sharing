@@ -24,10 +24,12 @@ router.get("/", async (req, res) => {
         "Meal.max_reservations",
         "Meal.price",
         "Meal.when",
+        "Meal.description",
+        "Meal.location",
       ])
       .countDistinct("Reservation.id as total_reservations")
       .leftJoin("Reservation", "Meal.id", "=", "Reservation.Meal_id")
-      .groupBy("Meal.id", "Meal.title", "Meal.max_reservations", "Meal.price", "Meal.when");
+      .groupBy("Meal.id", "Meal.title", "Meal.max_reservations", "Meal.price", "Meal.when", "Meal.description", "Meal.location");
 
     if (maxPrice !== undefined) {
       // Convert maxPrice to a float
@@ -77,10 +79,11 @@ router.get("/", async (req, res) => {
 });
 
 
-router.get("/", async (req,res) => {
+router.get("/all", async (req,res) => {
 try{
     const meals = await knex("Meal")    
-    .select();
+    .select("");
+    res.set("Content-Type", "application/json");
     res.json(meals);
 }catch(error){
     console.error(error);
