@@ -38,7 +38,8 @@ router.get("/", async (req, res) => {
       if (!isNaN(price) && price >= 0) {
         query.where("Meal.price", "<=", price);
       } else {
-        return res.status(400).send("Invalid maxPrice");
+        res.status(400).send("Invalid maxPrice");
+return
       }
     }
 
@@ -60,9 +61,9 @@ router.get("/", async (req, res) => {
       query.where("Meal.when", "<", dateBefore);
     }
 
-    if (limit !== undefined) {
+    if (limit !== undefined && parseInt(limit, 10) > 0) {
       query.limit(parseInt(limit, 10));
-    }
+    }    
 
     if (sortKey !== undefined) {
       const direction = sortDir === 'desc' ? 'desc' : 'asc';
