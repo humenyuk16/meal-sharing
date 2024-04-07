@@ -37,3 +37,18 @@
   text-align: center;
   color: #2d3233;
 }
+
+@media (prefers-color-scheme: dark) {
+  .MealsList-item {
+    color: #ccc;
+  }
+  .MealsList-item-title {
+    color: #ccc;
+  }
+  .MealsList-item-description {
+    color: #ccc;
+  }
+  .MealsList-title {
+    color: #ccc;
+  }
+}
