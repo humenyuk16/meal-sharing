@@ -6,6 +6,7 @@ function useFetch(url) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    let isMounted = true;
     async function fetchData() {
       try {
         const response = await fetch(url);
@@ -15,15 +16,24 @@ function useFetch(url) {
         }
 
         const parsedData = await response.json();
-        setData(parsedData);
-        setIsLoading(false);
+
+        if (isMounted) {
+          setData(parsedData);
+          setIsLoading(false);
+        }
       } catch (error) {
-        setError(error);
-        setIsLoading(false);
-        console.error("There was an error fetching the data:", error);
+        if (isMounted) {
+          setError(error);
+          setIsLoading(false);
+          console.error("There was an error fetching the data:", error);
+        }
       }
     }
     fetchData();
+
+    return () => {
+      isMounted = false;
+    };
   }, [url]);
 
   return { data, isLoading, error };

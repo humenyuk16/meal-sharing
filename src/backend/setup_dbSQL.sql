@@ -12,10 +12,10 @@ CREATE TABLE Review (
 
 INSERT INTO
     Meal (
-        title, description, location, price, when_datetime, max_reservations, created_date
+        title, description, location, price, `when`, max_reservations, created_date, image_url
     )
 VALUES (
-        'Title', 'Description', 'location', 10.99, '2024-04-08 08:00:00', 20, '2024-04-07 10:00:00'
+        'Humburger', 'A burger is a patty of ground beef grilled and placed between two halves of a bun. Slices of raw onion, lettuce, bacon, mayonnaise, and other ingredients add flavor. Burgers are considered an American food but are popular around the world. ', 'BBQ Place', 17.99, '2024-04-08 08:00:00', 20, '2024-04-07 10:00:00', 'https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDR8fGZvb2R8ZW58MHx8MHx8fDA%3D'
     );
 
 INSERT INTO

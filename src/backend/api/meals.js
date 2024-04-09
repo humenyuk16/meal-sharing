@@ -27,10 +27,11 @@ router.get("/", async (req, res) => {
 
         "Meal.description",
         "Meal.location",
+        "Meal.image_url",
       ])
       .countDistinct("Reservation.id as total_reservations")
       .leftJoin("Reservation", "Meal.id", "=", "Reservation.Meal_id")
-      .groupBy("Meal.id", "Meal.title", "Meal.max_reservations", "Meal.price", "Meal.when", "Meal.description", "Meal.location");
+      .groupBy("Meal.id", "Meal.title", "Meal.max_reservations", "Meal.price", "Meal.when", "Meal.description", "Meal.location", "Meal.image_url");
 
     
 
