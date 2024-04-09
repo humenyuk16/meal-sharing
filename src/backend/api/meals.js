@@ -83,8 +83,7 @@ return
 router.get("/all", async (req,res) => {
 try{
     const meals = await knex("Meal")    
-    .select("");
-    res.set("Content-Type", "application/json");
+    .select();
     res.json(meals);
 }catch(error){
     console.error(error);
