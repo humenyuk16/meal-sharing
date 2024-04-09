@@ -24,10 +24,16 @@ router.get("/", async (req, res) => {
         "Meal.max_reservations",
         "Meal.price",
         "Meal.when",
+
+        "Meal.description",
+        "Meal.location",
       ])
       .countDistinct("Reservation.id as total_reservations")
       .leftJoin("Reservation", "Meal.id", "=", "Reservation.Meal_id")
-      .groupBy("Meal.id", "Meal.title", "Meal.max_reservations", "Meal.price", "Meal.when");
+      .groupBy("Meal.id", "Meal.title", "Meal.max_reservations", "Meal.price", "Meal.when", "Meal.description", "Meal.location");
+
+    
+
 
     if (maxPrice !== undefined) {
       // Convert maxPrice to a float
@@ -36,7 +42,9 @@ router.get("/", async (req, res) => {
       if (!isNaN(price) && price >= 0) {
         query.where("Meal.price", "<=", price);
       } else {
+
         return res.status(400).send("Invalid maxPrice");
+
       }
     }
 
@@ -58,9 +66,11 @@ router.get("/", async (req, res) => {
       query.where("Meal.when", "<", dateBefore);
     }
 
-    if (limit !== undefined) {
+
+    if (limit !== undefined && parseInt(limit, 10) > 0) {
       query.limit(parseInt(limit, 10));
-    }
+    }    
+
 
     if (sortKey !== undefined) {
       const direction = sortDir === 'desc' ? 'desc' : 'asc';
@@ -77,7 +87,9 @@ router.get("/", async (req, res) => {
 });
 
 
+
 router.get("/", async (req,res) => {
+
 try{
     const meals = await knex("Meal")    
     .select();
