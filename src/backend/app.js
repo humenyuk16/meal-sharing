@@ -9,6 +9,7 @@ const reviewsRouter = require("./api/reviews");
 const buildPath = path.join(__dirname, "../../dist");
 const port = process.env.PORT || 3000;
 const cors = require("cors");
+const knex = require("./database");
 
 const knex = require("./database");
 
@@ -26,6 +27,91 @@ app.use(cors());
 router.use("/meals", mealsRouter);
 router.use( "/reservations",reservationsRouter);
 router.use("/reviews", reviewsRouter);
+
+app.get("/future-meals", async(reg, res) => {
+  try{
+    const futureMeals = await knex("Meal")
+    .select()
+    .where("when", ">", new Date());
+    if (futureMeals.length === 0){
+     res.status(404).send("No future meals found");
+     return
+    }
+    res.status(200).json(futureMeals);
+  }catch(error){
+    console.error(error);
+    res.status(500).send("Something went wrong");
+  }
+});
+
+app.get("/past-meals", async(reg,res)=>{
+  try{
+    const pastMeals = await knex("Meal")
+    .where("when", "<", new Date())
+    .select();
+    if(pastMeals.length === 0){
+      res.status(404).send("No past meals found");
+      return
+    }
+    res.status(200).json(pastMeals);
+  }catch(error){
+    console.error(error);
+    res.status(500).send("Something went wrong");
+  }
+});
+
+app.get("/all-meals", async(reg, res)=>{
+  try{
+    const allMeals = await knex("Meal")
+    .select()
+    .orderBy("id");
+    if(allMeals.length === 0){
+      res.status(404).send("No meals found");
+      return
+    }
+    res.status(200).json(allMeals);
+  }catch(error){
+    console.error(error);
+    res.status(500).send("Something went wrong");
+  }
+});
+
+app.get("/first-meal", async (req, res) => {
+  try {
+    const firstMeal = await knex("Meal")
+      .select()
+      .orderBy("id")
+      .first();
+
+    if (firstMeal) {
+      res.status(200).json(firstMeal);
+    } else {
+      res.status(404).send("No meal found");
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Something went wrong");
+  }
+});
+
+
+app.get("/last-meal", async (req, res) => {
+  try {
+    const lastMeal = await knex("Meal")
+      .select()
+      .where("id", '=', knex("Meal").max('id'));
+
+    if (lastMeal.length > 0) {
+      res.status(200).json(lastMeal);
+    } else {
+      res.status(404).send("No meal found");
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Something went wrong");
+  }
+});
+
 
 app.get("/future-meals", async(reg, res) => {
   try{
