@@ -1,5 +1,7 @@
 import React from "react";
 import useFetch from "./useFetch";
+import Meal from "./Meal";
+
 function MealsList() {
   const {
     data: meals,
@@ -20,11 +22,7 @@ function MealsList() {
       <h2 className="MealsList-title">Meals List</h2>
       <div className="MealsList-container">
         {meals.map((meal) => (
-          <div key={meal.id} className="MealsList-item">
-            <h3 className="MealsList-item-title">{meal.title}</h3>
-            <p className="MealsList-item-description">{meal.description}</p>
-            <p className="MealsList-item-price">Price: ${meal.price}</p>
-          </div>
+          <Meal key={meal.id} meal={meal} />
         ))}
       </div>
     </div>
